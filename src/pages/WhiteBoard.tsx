@@ -5,6 +5,7 @@ import { Circle, Layer, Line, Rect, Stage } from 'react-konva';
 
 
 export default function Whiteboard() {
+    
     const [tool, setTool] = useState<string>('pen');
     const [lines, setLines] = useState<ILine[]>([]);
     const [shapes, setShapes] = useState<Shape[]>([]);
@@ -100,7 +101,7 @@ export default function Whiteboard() {
             <ToolBar titleRef={titleRef} setTool={setTool} saveDrawing={saveDrawing} tool={tool} loading={loading}/>
             {loading && <div className="absolute w-full" ><div className="loader" /></div>}
             <Stage
-                width={window.innerWidth / 1.05}
+                width={window.innerWidth}
                 height={window.innerHeight / 1.18}
                 onMouseDown={handleMouseDown}
                 onMouseMove={handleMouseMove}

@@ -6,6 +6,7 @@ import DrawingPage from './pages/DrawingPage'
 import Navbar from './components/Navbar'
 import { createContext, useEffect, useState } from 'react'
 import { Drawing } from './types/types'
+import { baseUrl } from '../config';
 export const AppContext = createContext<any>(null)
 function App() {
   const [drawings, setDrawings] = useState<Array<Drawing>>([]);
@@ -15,7 +16,7 @@ function App() {
     // fetch drawings
     const fetchDrawings = async () => {
       setLoading(true);
-      const res = await fetch('http://localhost:3000/drawings');
+      const res = await fetch(`${baseUrl}/drawings`);
       const data = await res.json();
       setDrawings(data?.data);
       setLoading(false);
