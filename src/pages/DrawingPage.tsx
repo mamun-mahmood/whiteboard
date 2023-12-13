@@ -103,7 +103,6 @@ const DrawingPage: React.FC = () => {
       },
       body: JSON.stringify(drawingData),
     }).then(res => res.json()).then(data => {
-      console.log(data);
       setDrawings((prev: Drawing[]) => prev.map((d: any) => d._id === drawingId ? data.data : d))
     }
     ).catch(err => {

@@ -1,5 +1,4 @@
-import { AppContext } from '@/App';
-import {FC, LegacyRef, useContext} from 'react';
+import { FC, LegacyRef } from 'react';
 
 interface ToolBarProps {
     titleRef: LegacyRef<HTMLInputElement> ;
@@ -11,11 +10,9 @@ interface ToolBarProps {
 
 const ToolBar: FC<ToolBarProps> = ({titleRef, setTool, saveDrawing, tool, loading}) => {
     const tools = ['pen', 'rectangle', 'circle']
-    const {drawings} = useContext(AppContext)
-    const length = drawings.length + 1
   return (
     <div className="w-full h-10 bg-slate-400 flex justify-between px-5 items-center"  >
-                <input ref={titleRef} type="text" defaultValue={`My Drawings ${(length)}`} className='
+                <input ref={titleRef} type="text" defaultValue={`My Drawings`} className='
                  h-8 text-xl font-bold px-5 rounded-md' />
                 {/* tool buttons */}
                 <div className='flex gap-10'>

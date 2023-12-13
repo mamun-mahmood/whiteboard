@@ -1,7 +1,10 @@
+import { AppContext } from '@/App';
 import ToolBar from '@/components/ToolBar';
 import { Line as ILine, Shape } from '@/types/types';
-import React, { useRef, useState } from 'react';
+import React, { useContext, useRef, useState } from 'react';
 import { Circle, Layer, Line, Rect, Stage } from 'react-konva';
+import { baseUrl } from '../../config';
+import { useNavigate } from 'react-router-dom';
 
 
 export default function Whiteboard() {
@@ -70,6 +73,8 @@ export default function Whiteboard() {
         isDrawing.current = false;
     };
     const titleRef = useRef<HTMLInputElement>(null);
+    const {setDrawings} = useContext(AppContext)
+    const navigate = useNavigate()
     const saveDrawing = async () => {
         setLoading(true);
         const drawingData = {
@@ -78,14 +83,15 @@ export default function Whiteboard() {
             textAnnotations,
             title: titleRef.current?.value,
         };
-        await fetch('http://localhost:3000/drawing', {
+        await fetch(`${baseUrl}/drawing`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify(drawingData),
         }).then(res => res.json()).then(data => {
-            console.log(data);
+            setDrawings((prev: any) => [data.data, ...prev])
+            navigate(`/drawing/${data.data._id}`)
         }
         ).catch(err => {
             console.log(err);
