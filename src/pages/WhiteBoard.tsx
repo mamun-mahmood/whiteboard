@@ -3,8 +3,9 @@ import ToolBar from '@/components/ToolBar';
 import { Line as ILine, Shape } from '@/types/types';
 import React, { useContext, useRef, useState } from 'react';
 import { Circle, Layer, Line, Rect, Stage } from 'react-konva';
-import { baseUrl } from '../../config';
 import { useNavigate } from 'react-router-dom';
+import { baseUrl } from '../../config';
+import Swal from 'sweetalert2';
 
 
 export default function Whiteboard() {
@@ -12,7 +13,6 @@ export default function Whiteboard() {
     const [tool, setTool] = useState<string>('pen');
     const [lines, setLines] = useState<ILine[]>([]);
     const [shapes, setShapes] = useState<Shape[]>([]);
-    const [textAnnotations, setTextAnnotations] = useState<string[]>([]);
     const [loading, setLoading] = useState<boolean>(false);
     const isDrawing = useRef<boolean>(false);
 
@@ -80,7 +80,7 @@ export default function Whiteboard() {
         const drawingData = {
             lines,
             shapes,
-            textAnnotations,
+            // textAnnotations,
             title: titleRef.current?.value,
         };
         await fetch(`${baseUrl}/drawing`, {
@@ -91,7 +91,18 @@ export default function Whiteboard() {
             body: JSON.stringify(drawingData),
         }).then(res => res.json()).then(data => {
             setDrawings((prev: any) => [data.data, ...prev])
+            Swal.fire({
+                position: "top-end",
+                icon: data.success ? "success" : "error",
+                toast: true,
+                title: data.message,
+                showConfirmButton: false,
+                timer: 1500,
+              });
+              console.log(data);
+              
             navigate(`/drawing/${data.data._id}`)
+              
         }
         ).catch(err => {
             console.log(err);
@@ -104,7 +115,7 @@ export default function Whiteboard() {
 
     return (
         <div>
-            <ToolBar titleRef={titleRef} setTool={setTool} saveDrawing={saveDrawing} tool={tool} loading={loading}/>
+            <ToolBar titleRef={titleRef} setTool={setTool} saveDrawing={saveDrawing} tool={tool} loading={loading} />
             {loading && <div className="absolute w-full" ><div className="loader" /></div>}
             <Stage
                 width={window.innerWidth}
@@ -149,6 +160,7 @@ export default function Whiteboard() {
                         </React.Fragment>
                     ))}
                 </Layer>
+
             </Stage>
         </div>
     );

@@ -5,7 +5,7 @@ import { useContext } from 'react';
 
 
 const AllDrawings = () => {
-  const { drawings } = useContext(AppContext) as { drawings: Array<Drawing> }
+  const { drawings } = useContext(AppContext) as { drawings: Array<Drawing> } || [];
   return (
       <div style={{ display: 'flex', flexWrap: 'wrap' }}>
         {drawings.map((drawing) => (

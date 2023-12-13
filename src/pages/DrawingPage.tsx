@@ -5,6 +5,7 @@ import {  Drawing, Line as ILine, Shape } from '@/types/types';
 import { baseUrl } from '../../config';
 import ToolBar from '@/components/ToolBar';
 import { AppContext } from '@/App';
+import Swal from 'sweetalert2';
 
 
 const DrawingPage: React.FC = () => {
@@ -103,6 +104,14 @@ const DrawingPage: React.FC = () => {
       },
       body: JSON.stringify(drawingData),
     }).then(res => res.json()).then(data => {
+      Swal.fire({
+        position: "top-end",
+        icon: "success",
+        toast: true,
+        title: data.message,
+        showConfirmButton: false,
+        timer: 1500
+      });
       setDrawings((prev: Drawing[]) => prev.map((d: any) => d._id === drawingId ? data.data : d))
     }
     ).catch(err => {
@@ -116,7 +125,7 @@ const DrawingPage: React.FC = () => {
 
   return (
     <div>
-      <ToolBar titleRef={titleRef} setTool={setTool} saveDrawing={saveDrawing} tool={tool} loading={loading} />
+      <ToolBar titleRef={titleRef} setTool={setTool} saveDrawing={saveDrawing} tool={tool} loading={loading} drawingId={drawingId} setLoading={setLoading} />
       {loading && <div className="absolute w-full" ><div className="loader" /></div>}
       <Stage
         width={window.innerWidth }
