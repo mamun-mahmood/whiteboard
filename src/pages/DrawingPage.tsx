@@ -23,7 +23,7 @@ const DrawingPage: React.FC = () => {
       <h2> {drawingId}</h2>
 
       <Stage width={window.innerWidth}
-        height={600}>
+        height={window.innerHeight}>
         <Layer>
           {lines.map((line, i) => (
             <Line

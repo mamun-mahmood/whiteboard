@@ -89,15 +89,26 @@ export default function Whiteboard() {
 
     return (
         <div>
+            <select
+                value={tool}
+                onChange={(e) => {
+                    setTool(e.target.value);
+                }}
+            >
+                <option value="pen">Pen</option>
+                <option value="rectangle">Rectangle</option>
+                <option value="circle">Circle</option>
+            </select>
+            <button onClick={saveDrawing}>Save Drawing</button>
             <Stage
-                width={window.innerWidth}
-                height={window.innerHeight}
+                width={window.innerWidth / 1.05}
+                height={window.innerHeight / 1.18}
                 onMouseDown={handleMouseDown}
                 onMouseMove={handleMouseMove}
                 onMouseUp={handleMouseUp}
             >
                 <Layer>
-                    <Text text="Just start drawing" x={5} y={30} />
+                    <Text text="Start drawing" x={5} y={30} />
                     {lines.map((line, i) => (
                         <Line
                             key={i}
@@ -134,17 +145,6 @@ export default function Whiteboard() {
                     ))}
                 </Layer>
             </Stage>
-            <select
-                value={tool}
-                onChange={(e) => {
-                    setTool(e.target.value);
-                }}
-            >
-                <option value="pen">Pen</option>
-                <option value="rectangle">Rectangle</option>
-                <option value="circle">Circle</option>
-            </select>
-            <button onClick={saveDrawing}>Save Drawing</button>
         </div>
     );
 }
