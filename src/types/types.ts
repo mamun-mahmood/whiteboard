@@ -18,5 +18,6 @@ interface Drawing {
   shapes: Shape[];
   textAnnotations: string[];
   createdAt: string;
+  updatedAt: string;
 }
 export type {  Drawing, Line, Shape };

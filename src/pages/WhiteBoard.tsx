@@ -98,9 +98,7 @@ export default function Whiteboard() {
                 title: data.message,
                 showConfirmButton: false,
                 timer: 1500,
-              });
-              console.log(data);
-              
+              });              
             navigate(`/drawing/${data.data._id}`)
               
         }

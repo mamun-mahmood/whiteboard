@@ -11,12 +11,11 @@ interface DrawingCardProps {
 }
 
 const DrawingCard: React.FC<DrawingCardProps> = ({ drawing }) => {
-  console.log('drawing: ', drawing);
   const { title } = drawing;
   return (
     <Link to={`/drawing/${drawing._id}`}>
       <div
-        className='border border-slate-400 m-2 p-2 rounded-lg shadow-md'
+        className='border border-slate-400 m-2 p-2 rounded-lg shadow-md hover:opacity-70 transition-opacity overflow-hidden'
       >
         <h3>{title}</h3>
         <Stage width={400} height={250}>
@@ -57,6 +56,14 @@ const DrawingCard: React.FC<DrawingCardProps> = ({ drawing }) => {
             ))}
           </Layer>
         </Stage>
+        <div className="flex justify-between px-5">
+        <p>{
+          new Date(drawing.createdAt).toLocaleTimeString()
+        }</p>
+        <p>{
+          new Date(drawing.createdAt).toLocaleDateString()
+        }</p>
+        </div>
       </div>
     </Link>
   );
