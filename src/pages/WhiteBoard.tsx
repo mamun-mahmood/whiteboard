@@ -9,6 +9,7 @@ export default function Whiteboard() {
     const [lines, setLines] = useState<ILine[]>([]);
     const [shapes, setShapes] = useState<Shape[]>([]);
     const [textAnnotations, setTextAnnotations] = useState<string[]>([]);
+    const [loading, setLoading] = useState<boolean>(false);
     const isDrawing = useRef<boolean>(false);
 
     const handleMouseDown = (e: any) => {
@@ -69,7 +70,7 @@ export default function Whiteboard() {
     };
     const titleRef = useRef<HTMLInputElement>(null);
     const saveDrawing = async () => {
-        // Combine lines, shapes, and text annotations for API request
+        setLoading(true);
         const drawingData = {
             lines,
             shapes,
@@ -88,12 +89,16 @@ export default function Whiteboard() {
         ).catch(err => {
             console.log(err);
         }
+        ).finally(() => {
+            setLoading(false);
+        }
         );
     };
-    
+
     return (
         <div>
-           <ToolBar titleRef={titleRef} setTool={setTool} saveDrawing={saveDrawing} tool={tool} />
+            <ToolBar titleRef={titleRef} setTool={setTool} saveDrawing={saveDrawing} tool={tool} loading={loading}/>
+            {loading && <div className="absolute w-full" ><div className="loader" /></div>}
             <Stage
                 width={window.innerWidth / 1.05}
                 height={window.innerHeight / 1.18}

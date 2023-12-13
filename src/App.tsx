@@ -4,13 +4,33 @@ import WhiteBoard from './pages/WhiteBoard'
 import AllDrawings from './pages/AllDrawings'
 import DrawingPage from './pages/DrawingPage'
 import Navbar from './components/Navbar'
-
+import { createContext, useEffect, useState } from 'react'
+import { Drawing } from './types/types'
+export const AppContext = createContext<any>(null)
 function App() {
+  const [drawings, setDrawings] = useState<Array<Drawing>>([]);
+  const [loading, setLoading] = useState<boolean>(false);
+  { loading && <div className="loader" /> }
+  useEffect(() => {
+    // fetch drawings
+    const fetchDrawings = async () => {
+      setLoading(true);
+      const res = await fetch('http://localhost:3000/drawings');
+      const data = await res.json();
+      setDrawings(data?.data);
+      setLoading(false);
+    }
+    fetchDrawings();
+  }, []);
   return (
-    <div className=' '>
+    <AppContext.Provider value={{
+      drawings,
+      setDrawings
+    }}>
       <BrowserRouter basename='/'>
         <Navbar />
-        <div className='max-w-screen-2xl' >
+        {loading && <div className="loader" />}
+        <div className='' >
           <Routes>
             <Route path='/' element={<AllDrawings />} />
             <Route path='drawing/:drawingId' element={<DrawingPage />} />
@@ -19,7 +39,7 @@ function App() {
           </Routes>
         </div>
       </BrowserRouter>
-    </div>
+    </AppContext.Provider>
   )
 }
 
