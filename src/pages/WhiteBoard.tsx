@@ -1,6 +1,7 @@
+import ToolBar from '@/components/ToolBar';
 import { Line as ILine, Shape } from '@/types/types';
-import React, { useState, useRef } from 'react';
-import { Stage, Layer, Line, Text, Rect, Circle } from 'react-konva';
+import React, { useRef, useState } from 'react';
+import { Circle, Layer, Line, Rect, Stage } from 'react-konva';
 
 
 export default function Whiteboard() {
@@ -38,18 +39,21 @@ export default function Whiteboard() {
 
         switch (tool) {
             case 'pen':
-                let lastLine = lines[lines.length - 1];
+                // eslint-disable-next-line no-case-declarations
+                const lastLine = lines[lines.length - 1];
                 lastLine.points = lastLine.points.concat([point.x, point.y]);
                 setLines([...lines.slice(0, -1), lastLine]);
                 break;
             case 'rectangle':
-                let lastRectangle = shapes[shapes.length - 1];
+                // eslint-disable-next-line no-case-declarations
+                const lastRectangle = shapes[shapes.length - 1];
                 lastRectangle.width = point.x - lastRectangle.x;
                 lastRectangle.height = point.y - lastRectangle.y;
                 setShapes([...shapes.slice(0, -1), lastRectangle]);
                 break;
             case 'circle':
-                let lastCircle = shapes[shapes.length - 1];
+                // eslint-disable-next-line no-case-declarations
+                const lastCircle = shapes[shapes.length - 1];
                 lastCircle.radius = Math.sqrt(
                     Math.pow(point.x - lastCircle.x, 2) + Math.pow(point.y - lastCircle.y, 2)
                 );
@@ -63,14 +67,14 @@ export default function Whiteboard() {
     const handleMouseUp = () => {
         isDrawing.current = false;
     };
-
+    const titleRef = useRef<HTMLInputElement>(null);
     const saveDrawing = async () => {
         // Combine lines, shapes, and text annotations for API request
         const drawingData = {
             lines,
             shapes,
             textAnnotations,
-            title: 'My Drawing',
+            title: titleRef.current?.value,
         };
         await fetch('http://localhost:3000/drawing', {
             method: 'POST',
@@ -78,28 +82,18 @@ export default function Whiteboard() {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify(drawingData),
-        }).then(res => {
-            console.log(res);
+        }).then(res => res.json()).then(data => {
+            console.log(data);
         }
         ).catch(err => {
             console.log(err);
         }
         );
     };
-
+    
     return (
         <div>
-            <select
-                value={tool}
-                onChange={(e) => {
-                    setTool(e.target.value);
-                }}
-            >
-                <option value="pen">Pen</option>
-                <option value="rectangle">Rectangle</option>
-                <option value="circle">Circle</option>
-            </select>
-            <button onClick={saveDrawing}>Save Drawing</button>
+           <ToolBar titleRef={titleRef} setTool={setTool} saveDrawing={saveDrawing} tool={tool} />
             <Stage
                 width={window.innerWidth / 1.05}
                 height={window.innerHeight / 1.18}
@@ -108,7 +102,6 @@ export default function Whiteboard() {
                 onMouseUp={handleMouseUp}
             >
                 <Layer>
-                    <Text text="Start drawing" x={5} y={30} />
                     {lines.map((line, i) => (
                         <Line
                             key={i}

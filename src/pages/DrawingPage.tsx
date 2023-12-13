@@ -20,10 +20,8 @@ const DrawingPage: React.FC = () => {
   return (
     <div>
       <h1>{title} {drawingId}</h1>
-      <h2> {drawingId}</h2>
-
-      <Stage width={window.innerWidth}
-        height={window.innerHeight}>
+      <Stage width={window.innerWidth / 1.05}
+                height={window.innerHeight / 1.18}>
         <Layer>
           {lines.map((line, i) => (
             <Line
