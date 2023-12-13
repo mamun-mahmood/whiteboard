@@ -1,9 +1,10 @@
-import React, { useRef, useState } from 'react';
+import React, { useContext, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Stage, Layer, Line, Rect, Circle } from 'react-konva';
-import {  Line as ILine, Shape } from '@/types/types';
+import {  Drawing, Line as ILine, Shape } from '@/types/types';
 import { baseUrl } from '../../config';
 import ToolBar from '@/components/ToolBar';
+import { AppContext } from '@/App';
 
 
 const DrawingPage: React.FC = () => {
@@ -86,6 +87,7 @@ const DrawingPage: React.FC = () => {
   const handleMouseUp = () => {
     isDrawing.current = false;
   };
+  const {setDrawings} = useContext(AppContext)
   const saveDrawing = async () => {
     setLoading(true);
     const drawingData = {
@@ -102,6 +104,7 @@ const DrawingPage: React.FC = () => {
       body: JSON.stringify(drawingData),
     }).then(res => res.json()).then(data => {
       console.log(data);
+      setDrawings((prev: Drawing[]) => prev.map((d: any) => d._id === drawingId ? data.data : d))
     }
     ).catch(err => {
       console.log(err);
