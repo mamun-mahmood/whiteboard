@@ -53,7 +53,7 @@ const ToolBar: FC<ToolBarProps> = ({ titleRef, setTool, saveDrawing, tool, loadi
         });
     }
     return (
-        <div className=" bg-slate-400 flex flex-col sm:flex-row justify-between px-5 items-center py-2 gap-2"  >
+        <div className="w-full bg-slate-400 flex flex-col sm:flex-row justify-between px-5 items-center py-2 gap-2"  >
             <div className='flex items-center gap-5'>
                 <input ref={titleRef} type="text" defaultValue={`My Drawings`} className='
                  h-8 sm:text-xl font-bold px-5 rounded-md' />
