@@ -99,7 +99,7 @@ export default function Whiteboard() {
                 showConfirmButton: false,
                 timer: 1500,
               });              
-            navigate(`/drawing/${data.data._id}`)
+            if(data.success) navigate(`/drawing/${data.data._id}`)
               
         }
         ).catch(err => {
