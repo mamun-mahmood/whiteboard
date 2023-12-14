@@ -34,7 +34,14 @@ const ToolBar: FC<ToolBarProps> = ({ titleRef, setTool, saveDrawing, tool, loadi
                     },
                 }).then(res => res.json()).then(_data => {
                     setDrawings((prev: any) => prev.filter((d: any) => d._id !== drawingId))
-                    Swal.fire('Deleted!', '', 'success')
+                    Swal.fire({
+                        position: "top-end",
+                        icon: 'success',
+                        toast: true,
+                        title: 'Drawing Deleted',
+                        showConfirmButton: false,
+                        timer: 1500,
+                    })
                     navigate('/')
                 }).catch(err => {
                     console.log(err);
@@ -46,10 +53,10 @@ const ToolBar: FC<ToolBarProps> = ({ titleRef, setTool, saveDrawing, tool, loadi
         });
     }
     return (
-        <div className="w-full h-10 bg-slate-400 flex justify-between px-5 items-center"  >
+        <div className=" bg-slate-400 flex flex-col sm:flex-row justify-between px-5 items-center py-2 gap-2"  >
             <div className='flex items-center gap-5'>
                 <input ref={titleRef} type="text" defaultValue={`My Drawings`} className='
-                 h-8 text-xl font-bold px-5 rounded-md' />
+                 h-8 sm:text-xl font-bold px-5 rounded-md' />
                 {drawingId && <button className={`bg-slate-100 text-white p-1.5 rounded-md 
                     hover:bg-[#e53e3e] transition
                     `} onClick={handleDelete
@@ -66,8 +73,8 @@ const ToolBar: FC<ToolBarProps> = ({ titleRef, setTool, saveDrawing, tool, loadi
                     } key={t} title={t}>
                     <img className='w-5 h-5' src={`/${t}.svg`} alt="pen.svg" />
                 </button>)}
+            <button disabled={loading} className='text-white  text-xl hover:opacity-80 transition-opacity font-bold border border-rose-100 rounded-md p-1' onClick={saveDrawing}>Save</button>
             </div>
-            <button disabled={loading} className='text-white  text-2xl hover:opacity-80 transition-opacity font-bold' onClick={saveDrawing}>Save</button>
         </div>
     );
 };
