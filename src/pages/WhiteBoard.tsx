@@ -116,8 +116,8 @@ export default function Whiteboard() {
             <ToolBar titleRef={titleRef} setTool={setTool} saveDrawing={saveDrawing} tool={tool} loading={loading} />
             {loading && <div className="absolute w-full" ><div className="loader" /></div>}
             <Stage
-                width={window.innerWidth}
-                height={window.innerHeight / 1.18}
+                width={window.innerWidth/1.01 }
+                height={window.innerHeight / 1.22}
                 onMouseDown={handleMouseDown}
                 onMouseMove={handleMouseMove}
                 onMouseUp={handleMouseUp}
